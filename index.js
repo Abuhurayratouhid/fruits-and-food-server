@@ -9,7 +9,17 @@ app.use(cors())
 app.use(express.json())
 
 
-// mongodb connection 
+// mongodb connection
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.rz3ftkv.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+async function run(){
+
+}
+run().catch(error => console.log(error))
+
 
 
 app.get('/',(req, res)=>{
