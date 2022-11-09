@@ -51,7 +51,14 @@ async function run(){
             res.send(result)
             console.log(result)
         })
-        // get user review from db 
+        // get some review from db 
+        app.get('/review',async(req, res)=>{
+            const query = {} ;
+            const cursor = reviewCollection.find(query).limit(4)
+            const someReviews = await cursor.toArray()
+            res.send(someReviews)
+        })
+        // get user's review from db 
         app.get('/review',async(req, res)=>{
             let query = {};
             if(req.query.email){
