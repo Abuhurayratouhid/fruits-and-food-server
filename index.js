@@ -20,15 +20,7 @@ async function run(){
         const fruitsAndFoodDb = client.db('fruitsAndFoodDb');
         const fruitsAndFoodCollection = fruitsAndFoodDb.collection('fruitsAndFoodCollection');
         const reviewCollection = fruitsAndFoodDb.collection('reviewCollection')
-        // test 
-        app.post('/test',async(req, res)=>{
-            const doc = {
-                title: 'test',
-                from : 'test-file'
-            }
-            const result = await reviewCollection.insertOne(doc)
-            res.send(result)
-        })
+        
         //get all services from database 
         app.get('/allServices', async(req, res)=>{
             const query = {};
@@ -50,6 +42,19 @@ async function run(){
             const service = await fruitsAndFoodCollection.findOne(query)
             res.send(service)
         })
+
+
+        // create api to insert document in DB  
+        app.post('/review',async(req, res)=>{
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review)
+            res.send(result)
+            console.log(result)
+        })
+
+        // app.get('/review',async(req, res)=>{
+        //     const query = req.query.email;
+        // })
 
     }
     finally{
