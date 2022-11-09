@@ -51,10 +51,27 @@ async function run(){
             res.send(result)
             console.log(result)
         })
-
-        // app.get('/review',async(req, res)=>{
-        //     const query = req.query.email;
-        // })
+        // get user review from db 
+        app.get('/review',async(req, res)=>{
+            let query = {};
+            if(req.query.email){
+                query = {
+                    email: req.query.email
+                }
+            }
+            const cursor =  reviewCollection.find(query)
+            const reviews = await cursor.toArray();
+            
+            res.send(reviews)
+        })
+        // delete review 
+        app.delete('/review/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await reviewCollection.deleteOne(query)
+            res.send(result)
+            console.log(result)
+        })
 
     }
     finally{
