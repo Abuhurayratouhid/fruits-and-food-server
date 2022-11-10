@@ -28,6 +28,14 @@ async function run(){
             const allServices= await cursor.toArray();
             res.send(allServices)
         })
+        //add a service in Db
+        app.post('/addService',async(req, res)=>{
+            const review = req.body;
+            const result = await fruitsAndFoodCollection.insertOne(review)
+            res.send(result)
+            console.log(result)
+        }) 
+
         // create api for get limited data from DB
         app.get('/services',async(req, res)=>{
             const query = {} 
@@ -51,10 +59,17 @@ async function run(){
             res.send(result)
             console.log(result)
         })
-        // get some review from db 
+        // get some review from db (limited 4)
         app.get('/review',async(req, res)=>{
             const query = {} ;
             const cursor = reviewCollection.find(query).limit(4)
+            const someReviews = await cursor.toArray()
+            res.send(someReviews)
+        })
+        // get some review from db (limited 3)
+        app.get('/reviewHome',async(req, res)=>{
+            const query = {} ;
+            const cursor = reviewCollection.find(query).limit(3)
             const someReviews = await cursor.toArray()
             res.send(someReviews)
         })
