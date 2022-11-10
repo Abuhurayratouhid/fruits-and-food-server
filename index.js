@@ -66,6 +66,31 @@ async function run(){
             const someReviews = await cursor.toArray()
             res.send(someReviews)
         })
+
+        // get single details 
+        app.get('/singleReview/:id',async(req, res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const review = await reviewCollection.findOne(query)
+            res.send(review)
+        })
+
+        // update Review 
+        app.put('/updateReview/:id',async(req, res)=>{
+            const id = req.params.id;
+            const filter = {_id: ObjectId(id)}
+            const updatedReview = req.body ;
+            const option = {upsert: true}
+            const updateDoc = {
+                $set:{
+                    review : updatedReview.latest 
+                }
+            }
+            const result = await reviewCollection.updateOne(filter, updateDoc,option)
+            res.send(result)
+            console.log(updatedReview.latest)
+        })
+
         // get some review from db (limited 3)
         app.get('/reviewHome',async(req, res)=>{
             const query = {} ;
@@ -74,7 +99,7 @@ async function run(){
             res.send(someReviews)
         })
         // get user's review from db 
-        app.get('/review',async(req, res)=>{
+        app.get('/userReview',async(req, res)=>{
             let query = {};
             if(req.query.email){
                 query = {
